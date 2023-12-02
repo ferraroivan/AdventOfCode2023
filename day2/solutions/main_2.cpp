@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 int main(int argc, char * argv[])
 {
@@ -15,10 +16,10 @@ int main(int argc, char * argv[])
     std::string green = "green";
 
     // ID 
-    std::string id_string;
-    std::string first_digit_id;
-    std::string second_digit_id;
-    std::string third_digit_id;
+    // std::string id_string;
+    // std::string first_digit_id;
+    // std::string second_digit_id;
+    // std::string third_digit_id;
 
     // Red Cube Value
     std::string red_cube_string;
@@ -36,15 +37,9 @@ int main(int argc, char * argv[])
     std::string second_digit_green;
 
     char temp;
-    char semicolumn = ':';
 
     // Total sum of IDs
     int sum = 0;
-
-    // Flags
-    bool blue_flag;
-    bool red_flag;
-    bool green_flag;
     
     // RGB cubes of each line
     int blue_cubes_int;
@@ -52,9 +47,11 @@ int main(int argc, char * argv[])
     int green_cubes_int;
 
     // Max value of RGB cubes
-    int red_cube_max = 12;
-    int green_cube_max = 13;
-    int blue_cube_max = 14;
+    int red_cube_max;
+    int green_cube_max;
+    int blue_cube_max;
+
+    int power;
 
     while (std::getline(file, line))
     {
@@ -62,6 +59,12 @@ int main(int argc, char * argv[])
         std::vector<size_t> position_red_vector;
         std::vector<size_t> position_green_vector;
         std::vector<size_t> position_blue_vector;
+
+        // Vectors for no. of RGB cubes
+        std::vector<size_t> red_vector;
+        std::vector<size_t> blue_vector;
+        std::vector<size_t> green_vector;
+
 
         //BLUE CUBES
         //===============================
@@ -71,6 +74,7 @@ int main(int argc, char * argv[])
         // Find all positions of blue cubes in a line
         while (pos_blue != std::string::npos)
         {
+            // Position of blue cube into the map
             position_blue_vector.push_back(pos_blue);
             pos_blue = line.find(blue, pos_blue + 1);
         }
@@ -106,20 +110,16 @@ int main(int argc, char * argv[])
             blue_cube_string = first_digit_blue + second_digit_blue;
             blue_cubes_int = std::stoi(blue_cube_string);
 
+            blue_vector.push_back(blue_cubes_int);
+
             first_digit_blue = " ";
             second_digit_blue = " ";
-
-            // Check if blue cube digits are valid
-            if (blue_cubes_int <= blue_cube_max)
-            {
-                blue_flag = true;
-            }
-            else 
-            {
-                blue_flag = false;
-                break;
-            }
         }
+
+        std::sort(blue_vector.begin(), blue_vector.end());
+        
+        // Last element of the vector is the biggest
+        blue_cube_max = blue_vector.back();
 
         //GREEN CUBES
         //===============================
@@ -164,20 +164,15 @@ int main(int argc, char * argv[])
             green_cube_string = first_digit_green + second_digit_green;
             green_cubes_int = std::stoi(green_cube_string); 
 
+            green_vector.push_back(green_cubes_int);
+
             first_digit_green = " ";
             second_digit_green = " ";
-
-            // Check if green cube digits are valid
-            if (green_cubes_int <= green_cube_max)
-            {
-                green_flag = true;
-            }
-            else 
-            {
-                green_flag = false;
-                break;
-            }
         }
+
+        std::sort(green_vector.begin(), green_vector.end());
+        green_cube_max = green_vector.back();
+
         
         //RED CUBES
         //===============================
@@ -222,68 +217,34 @@ int main(int argc, char * argv[])
             red_cube_string = first_digit_red + second_digit_red;
             red_cubes_int = std::stoi(red_cube_string); 
 
+            red_vector.push_back(red_cubes_int);
+
             first_digit_red = " ";
             second_digit_red = " ";
-
-            // Check if red cube digits are valid
-            if (red_cubes_int <= red_cube_max)
-            {
-                red_flag = true;
-            }
-            else 
-            {
-                red_flag = false;
-                break;
-            }   
         }
-        
-        // Sum valid IDs of games
-        if (green_flag == true && blue_flag == true && red_flag == true)
-        {
-            // Parsing digits for ID game
-            int i = 0;
-            int counter_digit = 0;
-            while (line[i] != semicolumn)
-            {
-                if (std::isdigit(line[i])) 
-                {
-                    counter_digit++;
-                    if (counter_digit == 1)
-                    {
-                        temp = line[i];
-                        first_digit_id = temp;
-                    }
-                    else if (counter_digit == 2)
-                    {
-                        temp = line[i];
-                        second_digit_id = temp;
-                    }
-                    else if (counter_digit == 3)
-                    {
-                        temp = line[i];
-                        third_digit_id = temp;
-                    }
-                }
-                i++;
-            }
-            id_string = first_digit_id + second_digit_id + third_digit_id;
 
-            // Sum IDs
-            sum += std::stoi(id_string);
-        }
+        std::sort(red_vector.begin(), red_vector.end());
+        red_cube_max = red_vector.back();
+
+        // to compute the power
+        power = red_cube_max * green_cube_max * blue_cube_max;
+        sum += power;
 
         // Clear the vectors that hold the position of the RGB cubes
-        if (position_red_vector.empty() != 0)
+        if (position_red_vector.empty() != 0 || red_vector.empty() != 0)
         {
             position_red_vector.clear();
+            red_vector.clear();
         }
-        else if (position_blue_vector.empty() != 0)
+        else if (position_blue_vector.empty() != 0 || blue_vector.empty() != 0)
         {
             position_blue_vector.clear();
+            blue_vector.clear();
         }
-        else if (position_green_vector.empty() != 0)
+        else if (position_green_vector.empty() != 0 || green_vector.empty() != 0)
         {
             position_green_vector.clear();
+            green_vector.clear();
         }
 
         blue_cubes_int = 0;

@@ -125,6 +125,7 @@ int spelled_digit(std::string s)
     int value = myMap.at(s);
 
     // Position
+    if (myMap.find(s) == )
 
 }
 
