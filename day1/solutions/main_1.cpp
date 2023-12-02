@@ -32,7 +32,7 @@ int main(int argc, char * argv[])
             if (std::isdigit(arr1[i]))
             {
                 s1 = arr1[i];
-                std::cout << "Left to right: " << s1 << std::endl;
+                std::cout << "First digit: " << s1 << std::endl;
                 break;
             }
         }
@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
             if (std::isdigit(arr2[i]))
             {
                 s2 = arr2[i];
-                std::cout << "Right to left: " << s2 << std::endl;
+                std::cout << "Last digit: " << s2 << std::endl;
                 break;
             }
         }

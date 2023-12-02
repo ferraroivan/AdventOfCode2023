@@ -15,12 +15,6 @@ int main(int argc, char * argv[])
     std::string blue = "blue";
     std::string green = "green";
 
-    // ID 
-    // std::string id_string;
-    // std::string first_digit_id;
-    // std::string second_digit_id;
-    // std::string third_digit_id;
-
     // Red Cube Value
     std::string red_cube_string;
     std::string first_digit_red;
