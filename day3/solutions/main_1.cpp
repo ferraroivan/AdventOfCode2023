@@ -9,7 +9,7 @@ struct Number {
     int col;
     int row;
     int number;
-    int order;
+    int order; // (number of digits)
 };
 
 int main(int argc, char * argv[]) {
